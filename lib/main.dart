@@ -9,6 +9,18 @@ void main() {
   runApp(const MyApp());
 }
 
+
+extension ThemeColors on BuildContext {
+  Color get surface => Theme.of(this).colorScheme.surface;
+  Color get bg => Theme.of(this).scaffoldBackgroundColor;
+  Color get primary => Theme.of(this).colorScheme.primary;
+  Color get secondary => Theme.of(this).colorScheme.secondary;
+  Color get textMain => Theme.of(this).brightness == Brightness.dark ? Colors.white : Colors.black87;
+  Color get textDim => Theme.of(this).brightness == Brightness.dark ? Colors.white70 : Colors.black54;
+  Color get border => Theme.of(this).brightness == Brightness.dark ? const Color(0xFF1E293B) : const Color(0xFFCBD5E1);
+  Color get greyText => Theme.of(this).brightness == Brightness.dark ? Colors.grey : Colors.grey.shade700;
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -17,14 +29,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ThaClick',
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.system,
       theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF0097A7), // Light Cyber Cyan
+          secondary: Color(0xFF00C853), // Light Emerald
+          error: Color(0xFFFF5252),
+          surface: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF0A0E17),
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF00E5FF), // Cyber Cyan
-          secondary: Color(0xFF00E676), // Emerald Green
-          error: Color(0xFFFF5252), // Neon Red
-          surface: Color(0xFF161F30), // Dark Blue Gray
+          primary: Color(0xFF00E5FF),
+          secondary: Color(0xFF00E676),
+          error: Color(0xFFFF5252),
+          surface: Color(0xFF161F30),
         ),
         useMaterial3: true,
       ),
@@ -222,19 +246,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0E17),
+      backgroundColor: context.bg,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset('assets/thaclick_logo.svg', width: 120, height: 120),
-            const SizedBox(height: 24),
-            const Text(
+            SizedBox(height: 24),
+            Text(
               'ThaClick',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF00E5FF),
+                color: context.primary,
                 letterSpacing: 2,
               ),
             ),
@@ -507,43 +531,43 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF161F30),
-          title: Text(isWait ? AppStrings.editWait : AppStrings.editPoint, style: const TextStyle(color: Colors.white)),
+          backgroundColor: context.surface,
+          title: Text(isWait ? AppStrings.editWait : AppStrings.editPoint, style: TextStyle(color: context.textMain)),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   controller: nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(labelText: AppStrings.name, labelStyle: TextStyle(color: Colors.grey)),
+                  style: TextStyle(color: context.textMain),
+                  decoration: InputDecoration(labelText: AppStrings.name, labelStyle: TextStyle(color: context.greyText)),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextField(
                   controller: delayController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(labelText: AppStrings.timeSeconds, labelStyle: TextStyle(color: Colors.grey)),
+                  style: TextStyle(color: context.textMain),
+                  decoration: InputDecoration(labelText: AppStrings.timeSeconds, labelStyle: TextStyle(color: context.greyText)),
                 ),
                 if (!isWait) ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: xController,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(labelText: 'X', labelStyle: TextStyle(color: Colors.grey)),
+                          style: TextStyle(color: context.textMain),
+                          decoration: InputDecoration(labelText: 'X', labelStyle: TextStyle(color: context.greyText)),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: TextField(
                           controller: yController,
                           keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(labelText: 'Y', labelStyle: TextStyle(color: Colors.grey)),
+                          style: TextStyle(color: context.textMain),
+                          decoration: InputDecoration(labelText: 'Y', labelStyle: TextStyle(color: context.greyText)),
                         ),
                       ),
                     ],
@@ -555,7 +579,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(AppStrings.cancel, style: TextStyle(color: Colors.grey)),
+              child: Text(AppStrings.cancel, style: TextStyle(color: context.greyText)),
             ),
             TextButton(
               onPressed: () {
@@ -573,7 +597,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 saveSteps();
                 Navigator.pop(context);
               },
-              child: Text(AppStrings.save, style: TextStyle(color: Color(0xFF00E5FF))),
+              child: Text(AppStrings.save, style: TextStyle(color: context.primary)),
             ),
           ],
         );
@@ -592,7 +616,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -615,30 +639,30 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1E293B),
+                          color: context.border,
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                              BoxShadow(
-                              color: const Color(0xFF00E5FF).withAlpha(51),
+                              color: context.primary.withAlpha(51),
                               blurRadius: 10,
                               spreadRadius: 1,
                             )
                           ],
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.bolt_rounded,
-                          color: Color(0xFF00E5FF),
+                          color: context.primary,
                           size: 32,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      const Text(
+                      SizedBox(width: 16),
+                      Text(
                         'THACLICK',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.5,
-                          color: Colors.white,
+                          color: context.textMain,
                         ),
                       ),
                     ],
@@ -653,16 +677,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'ESTADO DE PERMISOS',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: context.greyText,
                           letterSpacing: 1,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           // Accessibility Card
@@ -674,7 +698,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               onTap: () => ClickerService.openAccessibilitySettings(),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           // Overlay Card
                           Expanded(
                             child: _buildPermissionCard(
@@ -699,10 +723,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF161F30),
+                      color: context.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFF1E293B),
+                        color: context.border,
                       ),
                     ),
                     child: Column(
@@ -714,13 +738,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     'GESTOR DE PATRONES',
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF00E5FF),
+                                      color: context.primary,
                                     ),
                                   ),
                                   SizedBox(height: 4),
@@ -728,7 +752,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     'Alterna entre macros grabadas',
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: Colors.grey,
+                                      color: context.greyText,
                                     ),
                                   ),
                                 ],
@@ -737,11 +761,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             Row(
                               children: [
                                 Text(AppStrings.random,
-                                  style: TextStyle(fontSize: 12, color: Colors.white70),
+                                  style: TextStyle(fontSize: 12, color: context.textDim),
                                 ),
                                 Switch(
                                   value: randomizePatterns,
-                                  activeThumbColor: const Color(0xFF00E5FF),
+                                  activeThumbColor: context.primary,
                                   onChanged: (val) {
                                     setState(() { randomizePatterns = val; });
                                     saveSteps();
@@ -751,7 +775,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -765,16 +789,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       child: ChoiceChip(
                                         label: Text(AppStrings.pattern + '${i + 1}'),
                                         selected: activePatternIndex == i,
-                                        selectedColor: const Color(0xFF00E5FF).withValues(alpha: 0.3),
+                                        selectedColor: context.primary.withValues(alpha: 0.3),
                                         labelStyle: TextStyle(
-                                          color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.white70,
+                                          color: activePatternIndex == i ? context.primary : context.textDim,
                                           fontWeight: activePatternIndex == i ? FontWeight.bold : FontWeight.normal,
                                         ),
-                                        backgroundColor: const Color(0xFF1E293B),
+                                        backgroundColor: context.border,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(8),
                                           side: BorderSide(
-                                            color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.transparent,
+                                            color: activePatternIndex == i ? context.primary : Colors.transparent,
                                           ),
                                         ),
                                         onSelected: (selected) {
@@ -786,8 +810,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       ),
                                     ),
                                   ActionChip(
-                                    label: const Icon(Icons.add, size: 18, color: Colors.white),
-                                    backgroundColor: const Color(0xFF1E293B),
+                                    label: Icon(Icons.add, size: 18, color: context.textMain),
+                                    backgroundColor: context.border,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
                                     onPressed: () {
                                       setState(() {
@@ -800,19 +824,19 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12),
                             Row(
                               children: [
                                 ActionChip(
                                   label: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Icon(Icons.copy, size: 14, color: Colors.white),
-                                      const SizedBox(width: 4),
-                                      Text(AppStrings.isEs ? 'Clonar' : 'Clone', style: const TextStyle(color: Colors.white, fontSize: 12)),
+                                      Icon(Icons.copy, size: 14, color: context.textMain),
+                                      SizedBox(width: 4),
+                                      Text(AppStrings.isEs ? 'Clonar' : 'Clone', style: TextStyle(color: context.textMain, fontSize: 12)),
                                     ],
                                   ),
-                                  backgroundColor: const Color(0xFF1E293B),
+                                  backgroundColor: context.border,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
                                   onPressed: () {
                                     setState(() {
@@ -823,11 +847,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     saveSteps();
                                   },
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 if (patterns.length > 1)
                                   ActionChip(
-                                    label: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
-                                    backgroundColor: const Color(0xFF1E293B),
+                                    label: Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
+                                    backgroundColor: context.border,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
                                     onPressed: () {
                                       setState(() {
@@ -870,40 +894,40 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     isOverlayVisible
                                         ? 'OCULTAR CONTROLES'
                                         : 'MOSTRAR CONTROLES',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF00E5FF),
+                                    backgroundColor: context.primary,
                                     padding: const EdgeInsets.symmetric(vertical: 16),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    shadowColor: const Color(0xFF00E5FF).withAlpha(102),
+                                    shadowColor: context.primary.withAlpha(102),
                                     elevation: 8,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Row(
                             children: [
                               Expanded(
                                 child: OutlinedButton.icon(
                                   onPressed: addWaitStep,
-                                  icon: const Icon(Icons.timer_rounded, color: Color(0xFF00E5FF)),
-                                  label: const Text(
+                                  icon: Icon(Icons.timer_rounded, color: context.primary),
+                                  label: Text(
                                     'ESPERA',
                                     style: TextStyle(
-                                      color: Color(0xFF00E5FF),
+                                      color: context.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(color: Color(0xFF00E5FF)),
+                                    side: BorderSide(color: context.primary),
                                     padding: const EdgeInsets.symmetric(vertical: 14),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -911,12 +935,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 12),
+                              SizedBox(width: 12),
                               Expanded(
                                 child: OutlinedButton.icon(
                                   onPressed: steps.isEmpty ? null : clearSteps,
-                                  icon: const Icon(Icons.delete_sweep_rounded, color: Color(0xFFFF5252)),
-                                  label: const Text(
+                                  icon: Icon(Icons.delete_sweep_rounded, color: Color(0xFFFF5252)),
+                                  label: Text(
                                     'LIMPIAR',
                                     style: TextStyle(
                                       color: Color(0xFFFF5252),
@@ -924,7 +948,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                   style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(color: Color(0xFFFF5252)),
+                                    side: BorderSide(color: Color(0xFFFF5252)),
                                     padding: const EdgeInsets.symmetric(vertical: 14),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -948,10 +972,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF161F30),
+                      color: context.surface,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFF1E293B),
+                        color: context.border,
                       ),
                     ),
                     child: Row(
@@ -960,13 +984,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 'REPETIR SECUENCIA (BUCLE)',
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF00E5FF),
+                                  color: context.primary,
                                 ),
                               ),
                               SizedBox(height: 4),
@@ -974,7 +998,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 'Veces que se ejecuta',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.grey,
+                                  color: context.greyText,
                                 ),
                               ),
                             ],
@@ -993,13 +1017,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1E293B),
+                                  color: context.border,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Icon(
                                   Icons.remove,
                                   size: 16,
-                                  color: loopCount <= 0 ? Colors.grey : const Color(0xFF00E5FF),
+                                  color: loopCount <= 0 ? context.greyText : context.primary,
                                 ),
                               ),
                             ),
@@ -1007,10 +1031,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 loopCount == 0 ? 'Infinito ♾️' : '${loopCount}x',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: context.textMain,
                                 ),
                               ),
                             ),
@@ -1025,13 +1049,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1E293B),
+                                  color: context.border,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.add,
                                   size: 16,
-                                  color: Color(0xFF00E5FF),
+                                  color: context.primary,
                                 ),
                               ),
                             ),
@@ -1052,25 +1076,25 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     children: [
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'SECUENCIA DE ATAQUE',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                              color: context.greyText,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF1E293B),
+                              color: context.border,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               '${steps.length}',
-                              style: const TextStyle(
-                                color: Color(0xFF00E5FF),
+                              style: TextStyle(
+                                color: context.primary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -1082,7 +1106,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         IconButton(
                           icon: Icon(
                             isRunning ? Icons.pause_circle_filled_rounded : Icons.play_circle_fill_rounded,
-                            color: isRunning ? const Color(0xFFFFD600) : const Color(0xFF00E676),
+                            color: isRunning ? Color(0xFFFFD600) : context.secondary,
                             size: 28,
                           ),
                           onPressed: () async {
@@ -1106,9 +1130,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF161F30),
+                      color: context.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF1E293B)),
+                      border: Border.all(color: context.border),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1116,21 +1140,21 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         Icon(
                           Icons.touch_app_rounded,
                           size: 48,
-                          color: Colors.grey.withAlpha(128),
+                          color: context.greyText.withAlpha(128),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Text(AppStrings.noPoints,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Text(AppStrings.noPointsDesc,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: context.greyText,
                           ),
                         ),
                       ],
@@ -1161,10 +1185,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF161F30),
+                          color: context.surface,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: const Color(0xFF1E293B),
+                            color: context.border,
                           ),
                         ),
                         child: Row(
@@ -1172,9 +1196,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             // Reorder Drag Handle
                             ReorderableDragStartListener(
                               index: index,
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.only(right: 8.0),
-                                child: Icon(Icons.drag_indicator_rounded, color: Colors.grey, size: 24),
+                                child: Icon(Icons.drag_indicator_rounded, color: context.greyText, size: 24),
                               ),
                             ),
                             // Point circle/icon indicator
@@ -1182,18 +1206,18 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               width: 32,
                               height: 32,
                               decoration: BoxDecoration(
-                                color: isWait ? const Color(0xFF00E5FF) : const Color(0xFFFF5252),
+                                color: isWait ? context.primary : Color(0xFFFF5252),
                                 shape: BoxShape.circle,
                               ),
                               alignment: Alignment.center,
                               child: isWait
-                                  ? const Icon(Icons.timer_rounded, color: Colors.black, size: 18)
+                                  ? Icon(Icons.timer_rounded, color: Colors.black, size: 18)
                                   : Text(
                                       '${index + 1}',
-                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: context.textMain),
                                     ),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             // Point details
                             Expanded(
                               child: InkWell(
@@ -1207,12 +1231,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     children: [
                                       Text(
                                         step.name.isNotEmpty ? step.name : (isWait ? 'Espera' : 'Punto ${index + 1}'),
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[200]),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey.shade200),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: 4),
                                       Text(
                                         isWait ? 'T: ${(step.delay / 1000).toStringAsFixed(1)}s' : 'T: ${(step.delay / 1000).toStringAsFixed(1)}s • X: ${step.x.toInt()} • Y: ${step.y.toInt()}',
-                                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                        style: TextStyle(color: context.greyText, fontSize: 12),
                                       ),
                                     ],
                                   ),
@@ -1223,7 +1247,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.copy, color: Colors.grey, size: 20),
+                                  icon: Icon(Icons.copy, color: context.greyText, size: 20),
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.all(8),
                                   onPressed: () {
@@ -1234,7 +1258,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
+                                  icon: Icon(Icons.delete_outline, color: context.greyText, size: 20),
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.all(8),
                                   onPressed: () => removeStep(absoluteIndex),
@@ -1255,14 +1279,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.chevron_left_rounded),
-                          color: currentPage > 0 ? const Color(0xFF00E5FF) : Colors.grey.withValues(alpha: 0.3),
+                          icon: Icon(Icons.chevron_left_rounded),
+                          color: currentPage > 0 ? context.primary : context.greyText.withValues(alpha: 0.3),
                           onPressed: currentPage > 0 ? () => setState(() => currentPage--) : null,
                         ),
-                        Text('${AppStrings.page} ${currentPage + 1} / $totalPages', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        Text('${AppStrings.page} ${currentPage + 1} / $totalPages', style: TextStyle(color: context.textMain, fontWeight: FontWeight.bold)),
                         IconButton(
-                          icon: const Icon(Icons.chevron_right_rounded),
-                          color: currentPage < totalPages - 1 ? const Color(0xFF00E5FF) : Colors.grey.withValues(alpha: 0.3),
+                          icon: Icon(Icons.chevron_right_rounded),
+                          color: currentPage < totalPages - 1 ? context.primary : context.greyText.withValues(alpha: 0.3),
                           onPressed: currentPage < totalPages - 1 ? () => setState(() => currentPage++) : null,
                         ),
                       ],
@@ -1274,14 +1298,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   padding: const EdgeInsets.only(top: 10, bottom: 40),
                   child: Column(
                     children: [
-                      const Text(
+                      Text(
                         'v1.0.0',
-                        style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: context.greyText, fontSize: 13, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         'E33-a / Antigravity',
-                        style: TextStyle(color: Colors.grey.withValues(alpha: 0.4), fontSize: 11, letterSpacing: 1.5, fontWeight: FontWeight.w500),
+                        style: TextStyle(color: context.greyText.withValues(alpha: 0.4), fontSize: 11, letterSpacing: 1.5, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -1307,12 +1331,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xFF161F30),
+          color: context.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isEnabled
-                ? const Color(0xFF00E676).withAlpha(77)
-                : const Color(0xFFFF5252).withAlpha(77),
+                ? context.secondary.withAlpha(77)
+                : Color(0xFFFF5252).withAlpha(77),
             width: 1.5,
           ),
         ),
@@ -1324,32 +1348,32 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               children: [
                 Icon(
                   isEnabled ? Icons.check_circle_rounded : Icons.warning_rounded,
-                  color: isEnabled ? const Color(0xFF00E676) : const Color(0xFFFF5252),
+                  color: isEnabled ? context.secondary : Color(0xFFFF5252),
                   size: 24,
                 ),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: Colors.grey[600],
+                  color: Colors.grey.shade600,
                   size: 14,
                 )
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Text(
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               isEnabled ? AppStrings.active : AppStrings.tapToActivate,
               style: TextStyle(
                 fontSize: 12,
-                color: isEnabled ? const Color(0xFF00E676) : Colors.grey,
+                color: isEnabled ? context.secondary : context.greyText,
               ),
             ),
           ],
