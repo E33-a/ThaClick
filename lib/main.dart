@@ -587,12 +587,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 setState(() {
                   step.name = nameController.text;
                   final delayParsed = double.tryParse(delayController.text.replaceAll(',', '.'));
-                  if (delayParsed != null && delayParsed >= 0) step.delay = (delayParsed * 1000).toInt();
+                  if (delayParsed != null) step.delay = (delayParsed * 1000).clamp(50, 1000000).toInt();
                   if (!isWait) {
+                    final screenSize = MediaQuery.of(context).size;
                     final xParsed = double.tryParse(xController.text);
-                    if (xParsed != null) step.x = xParsed;
+                    if (xParsed != null) step.x = xParsed.clamp(0.0, screenSize.width);
                     final yParsed = double.tryParse(yController.text);
-                    if (yParsed != null) step.y = yParsed;
+                    if (yParsed != null) step.y = yParsed.clamp(0.0, screenSize.height);
                   }
                 });
                 saveSteps();
@@ -1232,7 +1233,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     children: [
                                       Text(
                                         step.name.isNotEmpty ? step.name : (isWait ? 'Espera' : 'Punto ${index + 1}'),
-                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey.shade200),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: context.textMain),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       SizedBox(height: 4),
                                       Text(
