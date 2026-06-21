@@ -1337,7 +1337,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        'E33-a / Antigravity',
+                        'E33-a',
                         style: TextStyle(color: context.greyText.withValues(alpha: 0.4), fontSize: 11, letterSpacing: 1.5, fontWeight: FontWeight.w500),
                       ),
                     ],
