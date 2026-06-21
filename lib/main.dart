@@ -1342,7 +1342,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Column(
                     children: [
                       Text(
-                        'v1.0.0',
+                        'v1.0.0 • Android 8.0+',
                         style: TextStyle(color: context.greyText, fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 4),
