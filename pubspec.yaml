@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.3.0
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -93,5 +94,18 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: false
-  image_path: "assets/icon.png"
+  image_path: "assets/thaclick_icon.png"
   min_sdk_android: 21
+  adaptive_icon_background: "#0A0E17"
+  adaptive_icon_foreground: "assets/thaclick_icon.png"
+
+flutter_native_splash:
+  color: "#0A0E17"
+  image: "assets/thaclick_icon.png"
+  color_dark: "#0A0E17"
+  image_dark: "assets/thaclick_icon.png"
+  android_12:
+    color: "#0A0E17"
+    image: "assets/thaclick_icon.png"
+    color_dark: "#0A0E17"
+    image_dark: "assets/thaclick_icon.png"
