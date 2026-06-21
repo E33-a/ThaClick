@@ -12,7 +12,6 @@
 
 <h2 id="english">English</h2>
 
-**ThaClick** is a powerful Android accessibility tool and service designed to automate repetitive workflows on touchscreens through the recording and injection of touch sequences (macros).
 
 Built with **Flutter** on the front-end and native **Kotlin** on the back-end, ThaClick provides a seamless user experience coupled with a highly advanced gesture injection engine. Thanks to its native "humanization" (Jitter) system, the app prevents detection by bot-monitoring heuristics through organic and dynamic variations in every single action.
 
@@ -44,11 +43,13 @@ Ensure you have the **Flutter** environment configured for Android.
    ```bash
    flutter build apk --release
    ```
+
    *(You can also install immediately via `flutter run`)*
 
 ### System Permission Requirements
 
 To operate properly and inject touch events, ThaClick will request and require special permissions on your device:
+
 * **Display over other apps (Overlay):** Mandatory to project the floating control menu.
 * **Accessibility Service:** The fundamental core required to emit native Android gestures and simulate touches.
 * **Notifications (Foreground Service):** Allows the tool to remain in a hidden "standby" mode and be summoned quickly without OS interruptions.
@@ -97,11 +98,13 @@ Asegúrate de contar con el entorno de **Flutter** configurado para Android.
    ```bash
    flutter build apk --release
    ```
+
    *(También puedes instalar de manera inmediata con `flutter run`)*
 
 ### Requisitos de Permisos del Sistema
 
 Para operar adecuadamente e inyectar toques, ThaClick solicitará y requerirá permisos especiales en el dispositivo:
+
 * **Mostrar sobre otras aplicaciones (Overlay):** Obligatorio para proyectar el menú de botones.
 * **Servicio de Accesibilidad (Accessibility):** Base fundamental para emitir gestos nativos de Android y simular los toques.
 * **Notificaciones (Foreground Service):** Para que la herramienta pueda mantenerse en "espera" oculta y ser llamada rápidamente sin interrupciones del sistema.

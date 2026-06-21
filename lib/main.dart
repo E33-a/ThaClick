@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clash Auto-Deployer',
+      title: 'ThaClick',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -27,9 +28,38 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const SplashScreen(),
     );
   }
+}
+
+
+class AppStrings {
+  static bool get isEs => Platform.localeName.startsWith('es');
+  static String get title => 'ThaClick';
+  static String get loop => isEs ? 'Bucle' : 'Loop';
+  static String get pattern => isEs ? 'P' : 'P';
+  static String get editWait => isEs ? 'Editar Espera' : 'Edit Wait';
+  static String get editPoint => isEs ? 'Editar Punto' : 'Edit Point';
+  static String get name => isEs ? AppStrings.name : 'Name';
+  static String get timeSeconds => isEs ? AppStrings.timeSeconds : 'Time (seconds)';
+  static String get cancel => isEs ? AppStrings.cancel : 'Cancel';
+  static String get save => isEs ? AppStrings.save : 'Save';
+  static String get systemPermissions => isEs ? AppStrings.systemPermissions : 'System Permissions';
+  static String get overlayActive => isEs ? AppStrings.overlayActive : 'Overlay Active';
+  static String get showOverOtherApps => isEs ? AppStrings.showOverOtherApps : 'Show over other apps';
+  static String get antiBotService => isEs ? AppStrings.antiBotService : 'Anti-Bot Service';
+  static String get accessibilityRequired => isEs ? AppStrings.accessibilityRequired : 'Accessibility required';
+  static String get active => isEs ? AppStrings.active : 'Active';
+  static String get tapToActivate => isEs ? AppStrings.tapToActivate : 'Tap to activate';
+  static String get injectionEngine => isEs ? AppStrings.injectionEngine : 'Injection Engine';
+  static String get stop => isEs ? AppStrings.stop : 'Stop';
+  static String get start => isEs ? AppStrings.start : 'Start';
+  static String get patterns => isEs ? AppStrings.patterns : 'Patterns';
+  static String get random => isEs ? AppStrings.random : 'Random';
+  static String get noPoints => isEs ? AppStrings.noPoints : 'No points configured';
+  static String get noPointsDesc => isEs ? 'Activa los controles flotantes, abre la app destino, presiona el botón "+" y marca dónde quieres realizar los clics.' : 'Activate floating controls, open the target app, press "+" and mark clicks.';
+  static String get page => isEs ? 'Página' : 'Page';
 }
 
 class ClickStep {
@@ -169,6 +199,52 @@ class ClickerService {
   }
 }
 
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      if(mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MyHomePage())
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF0A0E17),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/thaclick_logo.svg', width: 120, height: 120),
+            const SizedBox(height: 24),
+            const Text(
+              'ThaClick',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF00E5FF),
+                letterSpacing: 2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -196,6 +272,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   bool isRunning = false;
   bool isOverlayVisible = false;
   int loopCount = 1;
+  int currentPage = 0;
 
   @override
   void initState() {
@@ -431,7 +508,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       builder: (context) {
         return AlertDialog(
           backgroundColor: const Color(0xFF161F30),
-          title: Text('Editar ${isWait ? 'Espera' : 'Punto'}', style: const TextStyle(color: Colors.white)),
+          title: Text(isWait ? AppStrings.editWait : AppStrings.editPoint, style: const TextStyle(color: Colors.white)),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -439,14 +516,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 TextField(
                   controller: nameController,
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(labelText: 'Nombre', labelStyle: TextStyle(color: Colors.grey)),
+                  decoration: InputDecoration(labelText: AppStrings.name, labelStyle: TextStyle(color: Colors.grey)),
                 ),
                 const SizedBox(height: 8),
                 TextField(
                   controller: delayController,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(labelText: 'Tiempo (segundos)', labelStyle: TextStyle(color: Colors.grey)),
+                  decoration: InputDecoration(labelText: AppStrings.timeSeconds, labelStyle: TextStyle(color: Colors.grey)),
                 ),
                 if (!isWait) ...[
                   const SizedBox(height: 8),
@@ -478,7 +555,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar', style: TextStyle(color: Colors.grey)),
+              child: Text(AppStrings.cancel, style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
               onPressed: () {
@@ -496,7 +573,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 saveSteps();
                 Navigator.pop(context);
               },
-              child: const Text('Guardar', style: TextStyle(color: Color(0xFF00E5FF))),
+              child: Text(AppStrings.save, style: TextStyle(color: Color(0xFF00E5FF))),
             ),
           ],
         );
@@ -506,6 +583,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    
+    int totalPages = (steps.length / 10).ceil();
+    if (totalPages == 0) totalPages = 1;
+    if (currentPage >= totalPages) currentPage = totalPages - 1;
+    final paginatedSteps = steps.skip(currentPage * 10).take(10).toList();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -666,8 +748,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             ),
                             Row(
                               children: [
-                                const Text(
-                                  'Aleatorio',
+                                Text(AppStrings.random,
                                   style: TextStyle(fontSize: 12, color: Colors.white70),
                                 ),
                                 Switch(
@@ -689,7 +770,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           children: [
                             for (int i = 0; i < patterns.length; i++)
                               ChoiceChip(
-                                label: Text('P${i + 1}'),
+                                label: Text(AppStrings.pattern + '${i + 1}'),
                                 selected: activePatternIndex == i,
                                 selectedColor: const Color(0xFF00E5FF).withValues(alpha: 0.3),
                                 labelStyle: TextStyle(
@@ -1037,16 +1118,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           color: Colors.grey.withAlpha(128),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'No hay puntos configurados',
+                        Text(AppStrings.noPoints,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Activa los controles flotantes, abre Clash of Clans, presiona el botón "+" y marca dónde quieres realizar los clics.',
+                        Text(AppStrings.noPointsDesc,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 12,
@@ -1059,17 +1138,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 )
               else
                 SliverReorderableList(
-                  itemCount: steps.length,
+                  itemCount: paginatedSteps.length,
                   onReorder: (int oldIndex, int newIndex) {
                     setState(() {
                       if (oldIndex < newIndex) newIndex -= 1;
-                      final item = steps.removeAt(oldIndex);
-                      steps.insert(newIndex, item);
+                      int absoluteOld = (currentPage * 10) + oldIndex;
+                      int absoluteNew = (currentPage * 10) + newIndex;
+                      final item = steps.removeAt(absoluteOld);
+                      steps.insert(absoluteNew, item);
                     });
                     saveSteps();
                   },
                   itemBuilder: (context, index) {
-                    final step = steps[index];
+                    int absoluteIndex = (currentPage * 10) + index;
+                    final step = paginatedSteps[index];
                     final isWait = step.type == 'wait';
                     return Material(
                       key: ValueKey('step_${step.hashCode}_$index'),
@@ -1114,7 +1196,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             // Point details
                             Expanded(
                               child: InkWell(
-                                onTap: () => _showEditDialog(index),
+                                onTap: () => _showEditDialog(absoluteIndex),
                                 borderRadius: BorderRadius.circular(8),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -1154,7 +1236,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   icon: const Icon(Icons.delete_outline, color: Colors.grey, size: 20),
                                   constraints: const BoxConstraints(),
                                   padding: const EdgeInsets.all(8),
-                                  onPressed: () => removeStep(index),
+                                  onPressed: () => removeStep(absoluteIndex),
                                 ),
                               ],
                             ),
@@ -1163,6 +1245,28 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       ),
                     );
                   },
+                ),
+              if (steps.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.chevron_left_rounded),
+                          color: currentPage > 0 ? const Color(0xFF00E5FF) : Colors.grey.withValues(alpha: 0.3),
+                          onPressed: currentPage > 0 ? () => setState(() => currentPage--) : null,
+                        ),
+                        Text('${AppStrings.page} ${currentPage + 1} / $totalPages', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        IconButton(
+                          icon: const Icon(Icons.chevron_right_rounded),
+                          color: currentPage < totalPages - 1 ? const Color(0xFF00E5FF) : Colors.grey.withValues(alpha: 0.3),
+                          onPressed: currentPage < totalPages - 1 ? () => setState(() => currentPage++) : null,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -1241,7 +1345,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             ),
             const SizedBox(height: 4),
             Text(
-              isEnabled ? 'Activo' : 'Toca para activar',
+              isEnabled ? AppStrings.active : AppStrings.tapToActivate,
               style: TextStyle(
                 fontSize: 12,
                 color: isEnabled ? const Color(0xFF00E676) : Colors.grey,
