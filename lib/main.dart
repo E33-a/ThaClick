@@ -62,6 +62,7 @@ class AppStrings {
   static bool get isEs => Platform.localeName.startsWith('es');
   static String get title => 'ThaClick';
   static String get loop => isEs ? 'Bucle' : 'Loop';
+  static String get loopSubtitle => isEs ? 'Veces que se ejecuta' : 'Times to execute';
   static String get pattern => isEs ? 'P' : 'P';
   static String get editWait => isEs ? 'Editar Espera' : 'Edit Wait';
   static String get editPoint => isEs ? 'Editar Punto' : 'Edit Point';
@@ -986,7 +987,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'REPETIR SECUENCIA (BUCLE)',
+                                AppStrings.loop.toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
@@ -995,7 +996,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                'Veces que se ejecuta',
+                                AppStrings.loopSubtitle,
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: context.greyText,
