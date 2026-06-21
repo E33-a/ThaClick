@@ -92,6 +92,14 @@ class AppStrings {
   static String get noPoints => isEs ? 'Sin puntos configurados' : 'No points configured';
   static String get noPointsDesc => isEs ? 'Activa los controles flotantes, abre la app destino, presiona el botón "+" y marca dónde quieres realizar los clics.' : 'Activate floating controls, open the target app, press "+" and mark clicks.';
   static String get page => isEs ? 'Página' : 'Page';
+  static String get accessibility => isEs ? 'Accesibilidad' : 'Accessibility';
+  static String get simulateClicks => isEs ? 'Simular clics' : 'Simulate clicks';
+  static String get overlay => isEs ? 'Superposición' : 'Overlay';
+  static String get showButtons => isEs ? 'Mostrar botones' : 'Show buttons';
+  static String get infinite => isEs ? 'Infinito ♾️' : 'Infinite ♾️';
+  static String get errorPermissions => isEs ? 'Por favor, activa primero los permisos necesarios.' : 'Please enable required permissions first.';
+  static String get errorService => isEs ? 'No se pudo mostrar el menú. Asegúrate de activar el Servicio de Accesibilidad.' : 'Could not show menu. Ensure Accessibility Service is enabled.';
+  static String get point => isEs ? 'Punto' : 'Point';
 }
 
 class ClickStep {
@@ -501,7 +509,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Por favor, activa primero los permisos necesarios.'),
+          content: Text(AppStrings.errorPermissions),
           backgroundColor: Color(0xFFFF5252),
         ),
       );
@@ -527,7 +535,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('No se pudo mostrar el menú. Asegúrate de activar el Servicio de Accesibilidad.'),
+            content: Text(AppStrings.errorService),
             backgroundColor: Color(0xFFFF5252),
           ),
         );
@@ -738,8 +746,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           // Accessibility Card
                           Expanded(
                             child: _buildPermissionCard(
-                              title: 'Accesibilidad',
-                              description: 'Simular clics',
+                              title: AppStrings.accessibility,
+                              description: AppStrings.simulateClicks,
                               isEnabled: isAccessibilityEnabled,
                               onTap: () => ClickerService.openAccessibilitySettings(),
                             ),
@@ -748,8 +756,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           // Overlay Card
                           Expanded(
                             child: _buildPermissionCard(
-                              title: 'Superposición',
-                              description: 'Mostrar botones',
+                              title: AppStrings.overlay,
+                              description: AppStrings.showButtons,
                               isEnabled: isOverlayEnabled,
                               onTap: () => ClickerService.openOverlaySettings(),
                             ),
@@ -1076,7 +1084,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
-                                loopCount == 0 ? 'Infinito ♾️' : '${loopCount}x',
+                                loopCount == 0 ? AppStrings.infinite : '${loopCount}x',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -1276,7 +1284,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        step.name.isNotEmpty ? step.name : (isWait ? 'Espera' : 'Punto ${index + 1}'),
+                                        step.name.isNotEmpty ? step.name : (isWait ? AppStrings.wait : '${AppStrings.point} ${index + 1}'),
                                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: context.textMain),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
