@@ -49,7 +49,7 @@ To operate properly and inject touch events, ThaClick will request and require s
 
 ### Credits 💡
 
-Crafted with love, dedication, and artificial intelligence by Emmanuel & Antigravity.
+Engineered by **E33-a** / **Antigravity**.
 
 ---
 
@@ -98,4 +98,4 @@ Para operar adecuadamente e inyectar toques, ThaClick solicitará y requerirá p
 
 ### Créditos 💡
 
-Creada con esfuerzo, dedicación e Inteligencia Artificial por Emmanuel y Antigravity :)
+Diseñado y desarrollado por **E33-a** / **Antigravity**.

@@ -1174,9 +1174,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        'Desarrollada en colaboración con Antigravity 🖤',
-                        style: TextStyle(color: Colors.grey.withValues(alpha: 0.6), fontSize: 11, fontStyle: FontStyle.italic),
+                      const Text(
+                        'E33-a / Antigravity',
+                        style: TextStyle(color: Colors.grey, fontSize: 10, letterSpacing: 0.5),
                       ),
                     ],
                   ),
