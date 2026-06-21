@@ -416,6 +416,9 @@ class AutoClickerService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         ClickManager.service = this
+        // Aseguramos que el Foreground Service inicie tan pronto se conecta el servicio de accesibilidad
+        showOverlay()
+        removeOverlay() // Ocultamos el overlay inicial pero dejamos la notificación
     }
 
     override fun onDestroy() {
@@ -433,15 +436,21 @@ class AutoClickerService : AccessibilityService() {
         if (collapsedView != null) return
         
         createNotificationChannel()
+        
+        val intent = android.content.Intent(this, MainActivity::class.java)
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = android.app.PendingIntent.getActivity(this, 0, intent, android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT)
+        
         val builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder(this, "auto_clicker_channel")
         } else {
             Notification.Builder(this)
         }
         val notification = builder
-            .setContentTitle("Macro Automática Activa")
-            .setContentText("El panel flotante está ejecutándose en segundo plano.")
+            .setContentTitle("ThaClick en ejecución")
+            .setContentText("Toca para reabrir la app y revivir el panel flotante.")
             .setSmallIcon(android.R.drawable.ic_menu_edit)
+            .setContentIntent(pendingIntent)
             .build()
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(1, notification, android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
@@ -633,7 +642,8 @@ class AutoClickerService : AccessibilityService() {
             }
             collapsedView = null
         }
-        stopForeground(true)
+        // No detenemos el ForegroundService para que la notificación persista
+        // y el usuario pueda revivir el panel tocándola.
     }
 
     fun updateOverlayUI() {

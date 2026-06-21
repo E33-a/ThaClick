@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
-        android:label="touch"
+        android:label="ThaClick"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
