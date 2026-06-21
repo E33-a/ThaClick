@@ -1241,6 +1241,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                       Text(
                                         isWait ? 'T: ${(step.delay / 1000).toStringAsFixed(1)}s' : 'T: ${(step.delay / 1000).toStringAsFixed(1)}s • X: ${step.x.toInt()} • Y: ${step.y.toInt()}',
                                         style: TextStyle(color: context.greyText, fontSize: 12),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
