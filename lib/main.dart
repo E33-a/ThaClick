@@ -508,9 +508,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     if (!isAccessibilityEnabled || !isOverlayEnabled) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(AppStrings.errorPermissions),
-          backgroundColor: Color(0xFFFF5252),
+          backgroundColor: const Color(0xFFFF5252),
         ),
       );
       return;
@@ -534,9 +534,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(AppStrings.errorService),
-            backgroundColor: Color(0xFFFF5252),
+            backgroundColor: const Color(0xFFFF5252),
           ),
         );
       }
