@@ -562,6 +562,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     final isWait = step.type == 'wait';
     final nameController = TextEditingController(text: step.name);
     final delayController = TextEditingController(text: (step.delay / 1000).toStringAsFixed(1));
+    final repeatController = TextEditingController(text: step.repeat.toString());
     final xController = TextEditingController(text: step.x.toInt().toString());
     final yController = TextEditingController(text: step.y.toInt().toString());
 
@@ -588,6 +589,13 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   decoration: InputDecoration(labelText: AppStrings.timeSeconds, labelStyle: TextStyle(color: context.greyText)),
                 ),
                 if (!isWait) ...[
+                  SizedBox(height: 8),
+                  TextField(
+                    controller: repeatController,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(color: context.textMain),
+                    decoration: InputDecoration(labelText: AppStrings.isEs ? 'Repeticiones (Clics seguidos)' : 'Repeats (Burst Clicks)', labelStyle: TextStyle(color: context.greyText)),
+                  ),
                   SizedBox(height: 8),
                   Row(
                     children: [
@@ -626,6 +634,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   final delayParsed = double.tryParse(delayController.text.replaceAll(',', '.'));
                   if (delayParsed != null) step.delay = (delayParsed * 1000).clamp(50, 1000000).toInt();
                   if (!isWait) {
+                    final repeatParsed = int.tryParse(repeatController.text);
+                    if (repeatParsed != null) step.repeat = repeatParsed.clamp(1, 1000);
                     final screenSize = MediaQuery.of(context).size;
                     final xParsed = double.tryParse(xController.text);
                     if (xParsed != null) step.x = xParsed.clamp(0.0, screenSize.width);
