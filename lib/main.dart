@@ -636,7 +636,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'CLASH DEPLOYER',
+                            'THACLICK',
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
