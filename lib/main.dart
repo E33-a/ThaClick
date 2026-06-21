@@ -1164,8 +1164,23 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     );
                   },
                 ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 30),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 40),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'v1.0.0',
+                        style: TextStyle(color: Colors.grey, fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Desarrollada en colaboración con Antigravity 🖤',
+                        style: TextStyle(color: Colors.grey.withValues(alpha: 0.6), fontSize: 11, fontStyle: FontStyle.italic),
+                      ),
+                    ],
+                  ),
+                ),
               )
             ],
           ),
