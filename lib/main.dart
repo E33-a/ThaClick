@@ -12,93 +12,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
 
-  void _showEditDialog(int index) {
-    final step = steps[index];
-    final isWait = step.type == 'wait';
-    final nameController = TextEditingController(text: step.name);
-    final delayController = TextEditingController(text: (step.delay / 1000).toStringAsFixed(1));
-    final xController = TextEditingController(text: step.x.toInt().toString());
-    final yController = TextEditingController(text: step.y.toInt().toString());
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF161F30),
-          title: Text('Editar ${isWait ? 'Espera' : 'Punto'}', style: const TextStyle(color: Colors.white)),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(labelText: 'Nombre', labelStyle: TextStyle(color: Colors.grey)),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: delayController,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(labelText: 'Tiempo (segundos)', labelStyle: TextStyle(color: Colors.grey)),
-                ),
-                if (!isWait) ...[
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: xController,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(labelText: 'X', labelStyle: TextStyle(color: Colors.grey)),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          controller: yController,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(labelText: 'Y', labelStyle: TextStyle(color: Colors.grey)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar', style: TextStyle(color: Colors.grey)),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  step.name = nameController.text;
-                  final delayParsed = double.tryParse(delayController.text.replaceAll(',', '.'));
-                  if (delayParsed != null && delayParsed >= 0) step.delay = (delayParsed * 1000).toInt();
-                  if (!isWait) {
-                    final xParsed = double.tryParse(xController.text);
-                    if (xParsed != null) step.x = xParsed;
-                    final yParsed = double.tryParse(yController.text);
-                    if (yParsed != null) step.y = yParsed;
-                  }
-                });
-                saveSteps();
-                Navigator.pop(context);
-              },
-              child: const Text('Guardar', style: TextStyle(color: Color(0xFF00E5FF))),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Clash Auto-Deployer',
@@ -759,7 +672,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 ),
                                 Switch(
                                   value: randomizePatterns,
-                                  activeColor: const Color(0xFF00E5FF),
+                                  activeThumbColor: const Color(0xFF00E5FF),
                                   onChanged: (val) {
                                     setState(() { randomizePatterns = val; });
                                     saveSteps();
@@ -778,7 +691,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               ChoiceChip(
                                 label: Text('P${i + 1}'),
                                 selected: activePatternIndex == i,
-                                selectedColor: const Color(0xFF00E5FF).withOpacity(0.3),
+                                selectedColor: const Color(0xFF00E5FF).withValues(alpha: 0.3),
                                 labelStyle: TextStyle(
                                   color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.white70,
                                   fontWeight: activePatternIndex == i ? FontWeight.bold : FontWeight.normal,
