@@ -96,7 +96,7 @@ class AppStrings {
   static String get simulateClicks => isEs ? 'Simular clics' : 'Simulate clicks';
   static String get overlay => isEs ? 'Superposición' : 'Overlay';
   static String get showButtons => isEs ? 'Mostrar botones' : 'Show buttons';
-  static String get infinite => isEs ? 'Infinito ♾️' : 'Infinite ♾️';
+  static String get infinite => isEs ? 'Infinito' : 'Infinite';
   static String get errorPermissions => isEs ? 'Por favor, activa primero los permisos necesarios.' : 'Please enable required permissions first.';
   static String get errorService => isEs ? 'No se pudo mostrar el menú. Asegúrate de activar el Servicio de Accesibilidad.' : 'Could not show menu. Ensure Accessibility Service is enabled.';
   static String get point => isEs ? 'Punto' : 'Point';
