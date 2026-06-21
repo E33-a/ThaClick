@@ -632,26 +632,14 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'THACLICK',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Gestor de Macros & Auto-Clicker',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                      const Text(
+                        'THACLICK',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
@@ -764,80 +752,93 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            for (int i = 0; i < patterns.length; i++)
-                              ChoiceChip(
-                                label: Text(AppStrings.pattern + '${i + 1}'),
-                                selected: activePatternIndex == i,
-                                selectedColor: const Color(0xFF00E5FF).withValues(alpha: 0.3),
-                                labelStyle: TextStyle(
-                                  color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.white70,
-                                  fontWeight: activePatternIndex == i ? FontWeight.bold : FontWeight.normal,
-                                ),
-                                backgroundColor: const Color(0xFF1E293B),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: BorderSide(
-                                    color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.transparent,
-                                  ),
-                                ),
-                                onSelected: (selected) {
-                                  if (selected) {
-                                    setState(() { activePatternIndex = i; });
-                                    saveSteps();
-                                  }
-                                },
-                              ),
-                            ActionChip(
-                              label: const Icon(Icons.add, size: 18, color: Colors.white),
-                              backgroundColor: const Color(0xFF1E293B),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
-                              onPressed: () {
-                                setState(() {
-                                  patterns.add([]);
-                                  activePatternIndex = patterns.length - 1;
-                                });
-                                saveSteps();
-                              },
-                            ),
-                            ActionChip(
-                              label: const Row(
-                                mainAxisSize: MainAxisSize.min,
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
                                 children: [
-                                  Icon(Icons.copy, size: 14, color: Colors.white),
-                                  SizedBox(width: 4),
-                                  Text('Clonar', style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  for (int i = 0; i < patterns.length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 8.0),
+                                      child: ChoiceChip(
+                                        label: Text(AppStrings.pattern + '${i + 1}'),
+                                        selected: activePatternIndex == i,
+                                        selectedColor: const Color(0xFF00E5FF).withValues(alpha: 0.3),
+                                        labelStyle: TextStyle(
+                                          color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.white70,
+                                          fontWeight: activePatternIndex == i ? FontWeight.bold : FontWeight.normal,
+                                        ),
+                                        backgroundColor: const Color(0xFF1E293B),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                          side: BorderSide(
+                                            color: activePatternIndex == i ? const Color(0xFF00E5FF) : Colors.transparent,
+                                          ),
+                                        ),
+                                        onSelected: (selected) {
+                                          if (selected) {
+                                            setState(() { activePatternIndex = i; });
+                                            saveSteps();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ActionChip(
+                                    label: const Icon(Icons.add, size: 18, color: Colors.white),
+                                    backgroundColor: const Color(0xFF1E293B),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
+                                    onPressed: () {
+                                      setState(() {
+                                        patterns.add([]);
+                                        activePatternIndex = patterns.length - 1;
+                                      });
+                                      saveSteps();
+                                    },
+                                  ),
                                 ],
                               ),
-                              backgroundColor: const Color(0xFF1E293B),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
-                              onPressed: () {
-                                setState(() {
-                                  List<ClickStep> currentPattern = patterns[activePatternIndex].map((s) => ClickStep.fromJson(s.toJson())).toList();
-                                  patterns.add(currentPattern);
-                                  activePatternIndex = patterns.length - 1;
-                                });
-                                saveSteps();
-                              },
                             ),
-                            if (patterns.length > 1)
-                              ActionChip(
-                                label: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
-                                backgroundColor: const Color(0xFF1E293B),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
-                                onPressed: () {
-                                  setState(() {
-                                    patterns.removeAt(activePatternIndex);
-                                    if (activePatternIndex >= patterns.length) {
+                            const SizedBox(height: 12),
+                            Row(
+                              children: [
+                                ActionChip(
+                                  label: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(Icons.copy, size: 14, color: Colors.white),
+                                      const SizedBox(width: 4),
+                                      Text(AppStrings.isEs ? 'Clonar' : 'Clone', style: const TextStyle(color: Colors.white, fontSize: 12)),
+                                    ],
+                                  ),
+                                  backgroundColor: const Color(0xFF1E293B),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
+                                  onPressed: () {
+                                    setState(() {
+                                      List<ClickStep> currentPattern = patterns[activePatternIndex].map((s) => ClickStep.fromJson(s.toJson())).toList();
+                                      patterns.add(currentPattern);
                                       activePatternIndex = patterns.length - 1;
-                                    }
-                                  });
-                                  saveSteps();
-                                },
-                              ),
+                                    });
+                                    saveSteps();
+                                  },
+                                ),
+                                const SizedBox(width: 8),
+                                if (patterns.length > 1)
+                                  ActionChip(
+                                    label: const Icon(Icons.delete_outline, size: 18, color: Colors.redAccent),
+                                    backgroundColor: const Color(0xFF1E293B),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
+                                    onPressed: () {
+                                      setState(() {
+                                        patterns.removeAt(activePatternIndex);
+                                        activePatternIndex = 0;
+                                      });
+                                      saveSteps();
+                                    },
+                                  ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
