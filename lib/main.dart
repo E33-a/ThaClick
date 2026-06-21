@@ -654,18 +654,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF0F172A),
-              Color(0xFF020617),
-            ],
-          ),
-        ),
-        child: SafeArea(
+      backgroundColor: context.bg,
+      body: SafeArea(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
@@ -1342,7 +1332,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   child: Column(
                     children: [
                       Text(
-                        'v1.0.0 • Android 8.0+',
+                        'v1.0.0',
                         style: TextStyle(color: context.greyText, fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 4),
@@ -1357,7 +1347,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             ],
           ),
         ),
-      ),
       ),
     );
   }
