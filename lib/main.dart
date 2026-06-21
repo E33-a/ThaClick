@@ -66,23 +66,30 @@ class AppStrings {
   static String get pattern => isEs ? 'P' : 'P';
   static String get editWait => isEs ? 'Editar Espera' : 'Edit Wait';
   static String get editPoint => isEs ? 'Editar Punto' : 'Edit Point';
-  static String get name => isEs ? AppStrings.name : 'Name';
-  static String get timeSeconds => isEs ? AppStrings.timeSeconds : 'Time (seconds)';
-  static String get cancel => isEs ? AppStrings.cancel : 'Cancel';
-  static String get save => isEs ? AppStrings.save : 'Save';
-  static String get systemPermissions => isEs ? AppStrings.systemPermissions : 'System Permissions';
-  static String get overlayActive => isEs ? AppStrings.overlayActive : 'Overlay Active';
-  static String get showOverOtherApps => isEs ? AppStrings.showOverOtherApps : 'Show over other apps';
-  static String get antiBotService => isEs ? AppStrings.antiBotService : 'Anti-Bot Service';
-  static String get accessibilityRequired => isEs ? AppStrings.accessibilityRequired : 'Accessibility required';
-  static String get active => isEs ? AppStrings.active : 'Active';
-  static String get tapToActivate => isEs ? AppStrings.tapToActivate : 'Tap to activate';
-  static String get injectionEngine => isEs ? AppStrings.injectionEngine : 'Injection Engine';
-  static String get stop => isEs ? AppStrings.stop : 'Stop';
-  static String get start => isEs ? AppStrings.start : 'Start';
-  static String get patterns => isEs ? AppStrings.patterns : 'Patterns';
-  static String get random => isEs ? AppStrings.random : 'Random';
-  static String get noPoints => isEs ? AppStrings.noPoints : 'No points configured';
+  static String get name => isEs ? 'Nombre' : 'Name';
+  static String get timeSeconds => isEs ? 'Tiempo (s)' : 'Time (s)';
+  static String get cancel => isEs ? 'Cancelar' : 'Cancel';
+  static String get save => isEs ? 'Guardar' : 'Save';
+  static String get systemPermissions => isEs ? 'Permisos del Sistema' : 'System Permissions';
+  static String get overlayActive => isEs ? 'Superposición Activa' : 'Overlay Active';
+  static String get showOverOtherApps => isEs ? 'Mostrar sobre otras apps' : 'Show over other apps';
+  static String get antiBotService => isEs ? 'Servicio Anti-Bot' : 'Anti-Bot Service';
+  static String get accessibilityRequired => isEs ? 'Accesibilidad requerida' : 'Accessibility required';
+  static String get active => isEs ? 'Activo' : 'Active';
+  static String get tapToActivate => isEs ? 'Toca para activar' : 'Tap to activate';
+  static String get injectionEngine => isEs ? 'Motor de Inyección' : 'Injection Engine';
+  static String get stop => isEs ? 'Detener' : 'Stop';
+  static String get start => isEs ? 'Iniciar' : 'Start';
+  static String get patterns => isEs ? 'Patrones' : 'Patterns';
+  static String get random => isEs ? 'Aleatorio' : 'Random';
+  static String get hideControls => isEs ? 'OCULTAR CONTROLES' : 'HIDE CONTROLS';
+  static String get showControls => isEs ? 'MOSTRAR CONTROLES' : 'SHOW CONTROLS';
+  static String get wait => isEs ? 'ESPERA' : 'WAIT';
+  static String get clear => isEs ? 'LIMPIAR' : 'CLEAR';
+  static String get attackSequence => isEs ? 'SECUENCIA DE ATAQUE' : 'ATTACK SEQUENCE';
+  static String get permissionStatus => isEs ? 'ESTADO DE PERMISOS' : 'PERMISSION STATUS';
+  static String get patternManager => isEs ? 'GESTOR DE PATRONES' : 'PATTERN MANAGER';
+  static String get noPoints => isEs ? 'Sin puntos configurados' : 'No points configured';
   static String get noPointsDesc => isEs ? 'Activa los controles flotantes, abre la app destino, presiona el botón "+" y marca dónde quieres realizar los clics.' : 'Activate floating controls, open the target app, press "+" and mark clicks.';
   static String get page => isEs ? 'Página' : 'Page';
 }
@@ -635,7 +642,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   if (delayParsed != null) step.delay = (delayParsed * 1000).clamp(50, 1000000).toInt();
                   if (!isWait) {
                     final repeatParsed = int.tryParse(repeatController.text);
-                    if (repeatParsed != null) step.repeat = repeatParsed.clamp(1, 1000);
+                    if (repeatParsed != null) step.repeat = repeatParsed.clamp(1, 500);
                     final screenSize = MediaQuery.of(context).size;
                     final xParsed = double.tryParse(xController.text);
                     if (xParsed != null) step.x = xParsed.clamp(0.0, screenSize.width);
@@ -717,7 +724,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'ESTADO DE PERMISOS',
+                        AppStrings.permissionStatus,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -779,7 +786,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'GESTOR DE PATRONES',
+                                    AppStrings.patternManager,
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
@@ -931,8 +938,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   ),
                                   label: Text(
                                     isOverlayVisible
-                                        ? 'OCULTAR CONTROLES'
-                                        : 'MOSTRAR CONTROLES',
+                                        ? AppStrings.hideControls
+                                        : AppStrings.showControls,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
@@ -959,7 +966,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   onPressed: addWaitStep,
                                   icon: Icon(Icons.timer_rounded, color: context.primary),
                                   label: Text(
-                                    'ESPERA',
+                                    AppStrings.wait,
                                     style: TextStyle(
                                       color: context.primary,
                                       fontWeight: FontWeight.bold,
@@ -980,7 +987,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                   onPressed: steps.isEmpty ? null : clearSteps,
                                   icon: Icon(Icons.delete_sweep_rounded, color: Color(0xFFFF5252)),
                                   label: Text(
-                                    'LIMPIAR',
+                                    AppStrings.clear,
                                     style: TextStyle(
                                       color: Color(0xFFFF5252),
                                       fontWeight: FontWeight.bold,
@@ -1078,9 +1085,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                               ),
                             ),
                             InkWell(
-                              onTap: () {
+                              onTap: loopCount >= 500 ? null : () {
                                 setState(() {
-                                  loopCount = loopCount + 1;
+                                  loopCount = (loopCount + 1).clamp(0, 500);
                                 });
                                 saveSteps();
                               },
@@ -1094,7 +1101,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                                 child: Icon(
                                   Icons.add,
                                   size: 16,
-                                  color: context.primary,
+                                  color: loopCount >= 500 ? context.greyText : context.primary,
                                 ),
                               ),
                             ),
@@ -1116,7 +1123,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       Row(
                         children: [
                           Text(
-                            'SECUENCIA DE ATAQUE',
+                            AppStrings.attackSequence,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,

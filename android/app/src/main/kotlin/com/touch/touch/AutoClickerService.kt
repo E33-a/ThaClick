@@ -389,7 +389,7 @@ class AutoClickerService : AccessibilityService() {
                     repVal.text = "${newVal}x"
                 }
                 val plusRep = createMiniBtn("+") {
-                    val newVal = step.repeat + 1
+                    val newVal = (step.repeat + 1).coerceAtMost(500)
                     val updatedStep = step.copy(repeat = newVal)
                     ClickManager.steps[index] = updatedStep
                     ClickManager.notifyStepsUpdated()
