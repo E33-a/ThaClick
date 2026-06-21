@@ -47,6 +47,10 @@ To operate properly and inject touch events, ThaClick will request and require s
 - **Accessibility Service:** The fundamental core required to emit native Android gestures and simulate touches.
 - **Notifications (Foreground Service):** Allows the tool to remain in a hidden "standby" mode and be summoned quickly without OS interruptions.
 
+### Credits 💡
+
+Crafted with love, dedication, and artificial intelligence by Emmanuel & Antigravity.
+
 ---
 
 <h2 id="español">🇪🇸 Español</h2>
@@ -91,3 +95,7 @@ Para operar adecuadamente e inyectar toques, ThaClick solicitará y requerirá p
 - **Mostrar sobre otras aplicaciones (Overlay):** Obligatorio para proyectar el menú de botones.
 - **Servicio de Accesibilidad (Accessibility):** Base fundamental para emitir gestos nativos de Android y simular los toques.
 - **Notificaciones (Foreground Service):** Para que la herramienta pueda mantenerse en "espera" oculta y ser llamada rápidamente sin interrupciones del sistema.
+
+### Créditos 💡
+
+Creada con esfuerzo, dedicación e Inteligencia Artificial por Emmanuel y Antigravity :)
